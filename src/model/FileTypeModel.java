@@ -39,7 +39,7 @@ public class FileTypeModel implements Callable<String> {
                     Boolean foundMatch = switch (algorithm) {
                         case "--NAIVE" -> naiveSearch (buffer, bytesRead, patternEntry.getPatternBytes());
                         case "--KMP" -> kmpSearch(buffer, bytesRead, patternEntry.getPatternBytes());
-                        case "--RK" -> rabinKarpSearch(buffer, bytesRead, patternEntry.getPatternBytes(), BASE, MOD);
+                        case "--RK" -> rabinKarpSearch(buffer, bytesRead, patternEntry.getPatternBytes());
                         default -> throw new IllegalArgumentException("Unknown algorithm \"" + algorithm + "\"");
                     };
                     if (foundMatch) {
@@ -52,7 +52,7 @@ public class FileTypeModel implements Callable<String> {
     }
 
     // https://www.geeksforgeeks.org/java-program-for-rabin-karp-algorithm-for-pattern-searching/
-    private boolean rabinKarpSearch(byte[] txt, int txt_length, byte[] pat, int d, int q) {
+    private boolean rabinKarpSearch(byte[] txt, int txt_length, byte[] pat) {
         int M = pat.length;
         int N = txt_length;
         int i, j;
@@ -62,13 +62,13 @@ public class FileTypeModel implements Callable<String> {
 
         // The value of h would be "pow(d, M-1)%q"
         for (i = 0; i < M - 1; i++)
-            h = (h * d) % q;
+            h = (h * BASE) % MOD;
 
         // Calculate the hash value of pattern and first
         // window of text
         for (i = 0; i < M; i++) {
-            p = (d * p + pat[i]) % q;
-            t = (d * t + txt[i]) % q;
+            p = (BASE * p + pat[i]) % MOD;
+            t = (BASE * t + txt[i]) % MOD;
         }
 
         // Slide the pattern over text one by one
@@ -92,12 +92,12 @@ public class FileTypeModel implements Callable<String> {
             // Calculate hash value for next window of text: Remove
             // leading digit, add trailing digit
             if (i < N - M) {
-                t = (d * (t - txt[i] * h) + txt[i + M]) % q;
+                t = (BASE * (t - txt[i] * h) + txt[i + M]) % MOD;
 
                 // We might get negative value of t, converting it
                 // to positive
                 if (t < 0)
-                    t = (t + q);
+                    t = (t + MOD);
             }
         }
         return false;

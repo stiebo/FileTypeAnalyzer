@@ -1,9 +1,9 @@
 package domain;
 
 public class PatternEntry {
-    private int priority;
-    private String pattern;
-    private String result;
+    private final int priority;
+    private final String pattern;
+    private final String result;
 
     public PatternEntry(int priority, String pattern, String result) {
         this.priority = priority;

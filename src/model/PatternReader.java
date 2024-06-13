@@ -22,7 +22,7 @@ public class PatternReader {
                 patterns.add(new PatternEntry(priority, pattern, result));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Cannot read patterns.");
         }
         patterns.sort(Comparator.comparingInt(PatternEntry::getPriority).reversed());
         return patterns;
