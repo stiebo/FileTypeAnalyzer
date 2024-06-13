@@ -5,6 +5,7 @@ public class Main {
     public static void main(String[] args) {
         if (args.length != 3) {
             System.out.println("Usage: java Main <algorithm> <folder_path> <patterns_file>");
+            System.out.println("Options for <algorithm>: \"--NAIVE\", \"--KMP\", \"--RK\"");
             return;
         }
 
